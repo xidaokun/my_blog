@@ -1,7 +1,9 @@
 ---
 title: Blockchain wallet
 date: 2019-07-18 15:27:45
-tags: Blockchain, Android
+tags: 
+    - Blockchain
+    - Android
 ---
 
 ### 简介
