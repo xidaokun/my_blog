@@ -145,6 +145,19 @@ incbin “file.dat”,1024,512 ; skip the first 1024, and
 编译器以相对于文件开头偏移来编址的好处是利于重定位。程序内的地址是从0开始算的，当程序被加载到内存的某个地址(不一定是0)后，就需要用vstart或org来指定偏移量，这个偏移量也就是加载到内存的地址。
 
 
+### mov
+格式：
+{% blockquote %}
+mov 位宽 目的操作数，源操作数
+{% endblockquote %}
+
+目的操作数必需是一个容器，如内存单元、寄存器；源操作数可以是一个立即数，也可以是一个容器。
+
+举例：
+{% blockquote %}
+mov byte [0x00],'2'
+{% endblockquote %}
+
 ### loop
 Loop指令需要和cx寄存器配合使用, 用于循环操作, 类似于高级语言中的for, while等。
 cx存放的是循环次数，循环一次，cx中的值减1，当cx中的值大于0时，执行loop循环。
@@ -207,11 +220,22 @@ push和pop是用来操作栈的2个指令；push将一个寄存器中的数据�
 mov ax 123H
 push ax 的执行，由以下两步完成。
 (1) SP = SP - 2, SS:SP 指向当前栈顶前面的单元，以当前栈顶前面的单元为新的栈顶；
-(2) 将ax中的内容送入SS:SP 指向的内存单元处， SS:SP 此时指向新栈顶。
+(2) 将ax中的内容送入SS:SP 指向的内存单元处，SS:SP此时指向新栈顶。
 
 
+### int
+int指令是X86汇编语言中最重要的指令之一。它的作用是引发中断，调用“中断例程”（interrupt routine）
 
+指令格式：
+{% blockquote %}
+int n ;n是中端号
+{% endblockquote %}
 
-
-
+指令执行过程：
+{% blockquote %}
+1，取中断类型码n；
+2，标志寄存器入栈（pushf），IF=0，TF=0（重置中断标志位）；
+3，CS、IP入栈；
+4，查中断向量表， (IP)=(n\*4)，(CS)=(n\*4+2)。
+{% endblockquote %}
 
