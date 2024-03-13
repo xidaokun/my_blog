@@ -46,10 +46,10 @@ future: true
 syntax_highlighter: highlight.js
 highlight:
   line_number: true
-  auto_detect: false
-  tab_replace: ''
+  auto_detect: true
+  tab_replace: false
   wrap: true
-  hljs: false
+  hljs: true #高亮显示
 prismjs:
   preprocess: true
   line_number: true
@@ -105,3 +105,4 @@ deploy:
   repo: https://github.com/xidaokun/xidaokun.github.io.git
   branch: main
   token: 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
+
