@@ -1,7 +1,9 @@
 ---
 title: OS Develop 2
 date: 2022-03-22 20:10:06
-tags: OS
+tags:
+   - IT-Basics
+   - OS
 ---
 
 ### 简介

@@ -1,7 +1,9 @@
 ---
 title: Data Struct 1
 date: 2022-01-05 18:10:23
-tags: IT-Basics
+tags:    
+    - IT-Basics
+    - Algorithm
 ---
 
 ### 简介

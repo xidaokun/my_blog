@@ -1,7 +1,9 @@
 ---
 title: Algorithm 3
 date: 2022-01-20 15:12:38
-tags: IT-Basics
+tags:
+    - IT-Basics
+    - Algorithm
 ---
 
 
