@@ -282,7 +282,7 @@ function countingSort(arr, maxValue) {
 - 遍历输入数据，并且把数据一个一个放到对应的桶里去；
 - 对每个不是空的桶进行排序；
 - 从不是空的桶里把排好序的数据拼接起来。
-{% asset_img bubble_sort.gif bubble sort %}
+{% asset_img bucket_sort.gif bubble sort %}
 
 {% codeblock %}
 function bucketSort(arr, bucketSize) {
