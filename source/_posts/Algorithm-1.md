@@ -7,367 +7,76 @@ tags:
 ---
 
 ### 简介
-算法第一章，讨论排序算法。
-{% asset_img sort_algorithm.png sort algorithm %}
-
-### 插入排序
-- 从第一个元素开始，该元素可以认为已经被排序；
-- 取出下一个元素，在已经排序的元素序列中从后向前扫描；
-- 如果该元素（已排序）大于新元素，将该元素移到下一位置；
-- 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置；
-将新元素插入到该位置后；
-- 重复步骤2~5。
-{% asset_img insertion_sort.gif bubble sort %}
-
-{% codeblock %}
-function insertionSort(arr) {
-    var len = arr.length;
-    var preIndex, current;
-    for (var i = 1; i < len; i++) {
-        preIndex = i - 1;
-        current = arr[i];
-        while (preIndex >= 0 && arr[preIndex] > current) {
-            arr[preIndex + 1] = arr[preIndex];
-            preIndex--;
-        }
-        arr[preIndex + 1] = current;
-    }
-    return arr;
-}
-{% endcodeblock %}
-
-### 冒泡排序
-- 比较相邻的元素。如果第一个比第二个大，就交换它们两个；
-- 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；
-- 针对所有的元素重复以上的步骤，除了最后一个；
-- 重复步骤1~3，直到排序完成。
-{% asset_img bubble_sort.gif bubble sort %}
-
-{% codeblock %}
-    function bubbleSort(arr) {
-        var len = arr.length;
-        for (var i = 0; i < len - 1; i++) {
-            for (var j = 0; j < len - 1 - i; j++) {
-                if (arr[j] > arr[j+1]) {        // 相邻元素两两对比
-                    var temp = arr[j+1];        // 元素交换
-                    arr[j+1] = arr[j];
-                    arr[j] = temp;
-                }
-            }
-        }
-        return arr;
-    }
-{% endcodeblock %}
-
-### 选择排序
-n个记录的直接选择排序可经过n-1趟直接选择排序得到有序结果。具体算法描述如下：
-
-- 初始状态：无序区为R[1..n]，有序区为空；
-- 第i趟排序(i=1,2,3…n-1)开始时，当前有序区和无序区分别为R[1..i-1]和R(i..n）。该趟排序从当前无序区中-选出关键字最小的记录 R[k]，将它与无序区的第1个记录R交换，使R[1..i]和R[i+1..n)分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区；
-- n-1趟结束，数组有序化了。
-{% asset_img selection_sort.gif bubble sort %}
-
-{% codeblock %}
-function selectionSort(arr) {
-    var len = arr.length;
-    var minIndex, temp;
-    for (var i = 0; i < len - 1; i++) {
-        minIndex = i;
-        for (var j = i + 1; j < len; j++) {
-            if (arr[j] < arr[minIndex]) {     // 寻找最小的数
-                minIndex = j;                 // 将最小数的索引保存
-            }
-        }
-        temp = arr[i];
-        arr[i] = arr[minIndex];
-        arr[minIndex] = temp;
-    }
-    return arr;
-} 
-{% endcodeblock %}
-
-### 希尔排序
-- 先选定一个整数gap，把待排序文件中所有元素分成gap组，即所有距离为gap的分在同一组内，并对每一组内的元素进行直接插入排序（本质是进行预排序，使数组更接近有序，目的是使最后一次直接插入排序提高效率）；
-- 取gap=gap/2或者gap=gap/3+1重复上述分组和排序的工作；
-- 当gap到达1时，数组是已经接近有序的，当gap=1，即以一个元素为一组，就相当于对整个数组进行直接插入排序了。
-{% asset_img shell_sort.gif bubble sort %}
-
-{% codeblock %}
-function shellSort(arr) {
-    var len = arr.length;
-    for (var gap = Math.floor(len / 2); gap > 0; gap = Math.floor(gap / 2)) {
-        // 注意：这里和动图演示的不一样，动图是分组执行，实际操作是多个分组交替执行
-        for (var i = gap; i < len; i++) {
-            var j = i;
-            var current = arr[i];
-            while (j - gap >= 0 && current < arr[j - gap]) {
-                 arr[j] = arr[j - gap];
-                 j = j - gap;
-            }
-            arr[j] = current;
-        }
-    }
-    return arr;
-}
-{% endcodeblock %}
-
-### 归并排序
-- 把长度为n的输入序列分成两个长度为n/2的子序列；
-- 对这两个子序列分别采用归并排序；
-- 将两个排序好的子序列合并成一个最终的排序序列。
-{% asset_img merge_sort.gif bubble sort %}
-
-{% codeblock %}
-function mergeSort(arr) {
-    var len = arr.length;
-    if (len < 2) {
-        return arr;
-    }
-    var middle = Math.floor(len / 2),
-        left = arr.slice(0, middle),
-        right = arr.slice(middle);
-    return merge(mergeSort(left), mergeSort(right));
-}
- 
-function merge(left, right) {
-    var result = [];
- 
-    while (left.length>0 && right.length>0) {
-        if (left[0] <= right[0]) {
-            result.push(left.shift());
-        } else {
-            result.push(right.shift());
-        }
-    }
- 
-    while (left.length)
-        result.push(left.shift());
- 
-    while (right.length)
-        result.push(right.shift());
- 
-    return result;
-}
-{% endcodeblock %}
-
-### 快速排序
-- 从数列中挑出一个元素，称为 “基准”（pivot）；
-- 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
-- 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
-
-{% asset_img quick_sort.gif bubble sort %}
-
-{% codeblock %}
-function quickSort(arr, left, right) {
-    var len = arr.length,
-        partitionIndex,
-        left = typeof left != 'number' ? 0 : left,
-        right = typeof right != 'number' ? len - 1 : right;
- 
-    if (left < right) {
-        partitionIndex = partition(arr, left, right);
-        quickSort(arr, left, partitionIndex-1);
-        quickSort(arr, partitionIndex+1, right);
-    }
-    return arr;
-}
- 
-function partition(arr, left ,right) {     // 分区操作
-    var pivot = left,                      // 设定基准值（pivot）
-        index = pivot + 1;
-    for (var i = index; i <= right; i++) {
-        if (arr[i] < arr[pivot]) {
-            swap(arr, i, index);
-            index++;
-        }       
-    }
-    swap(arr, pivot, index - 1);
-    return index-1;
-}
- 
-function swap(arr, i, j) {
-    var temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
-{% endcodeblock %}
-
-### 堆排序
-- 将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区；
-- 将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]<=R[n]；
-- 由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。
-{% asset_img heap_sort.gif bubble sort %}
-
-{% codeblock %}
-var len;    // 因为声明的多个函数都需要数据长度，所以把len设置成为全局变量
- 
-function buildMaxHeap(arr) {   // 建立大顶堆
-    len = arr.length;
-    for (var i = Math.floor(len/2); i >= 0; i--) {
-        heapify(arr, i);
-    }
-}
- 
-function heapify(arr, i) {     // 堆调整
-    var left = 2 * i + 1,
-        right = 2 * i + 2,
-        largest = i;
- 
-    if (left < len && arr[left] > arr[largest]) {
-        largest = left;
-    }
- 
-    if (right < len && arr[right] > arr[largest]) {
-        largest = right;
-    }
- 
-    if (largest != i) {
-        swap(arr, i, largest);
-        heapify(arr, largest);
-    }
-}
- 
-function swap(arr, i, j) {
-    var temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
- 
-function heapSort(arr) {
-    buildMaxHeap(arr);
- 
-    for (var i = arr.length - 1; i > 0; i--) {
-        swap(arr, 0, i);
-        len--;
-        heapify(arr, 0);
-    }
-    return arr;
-}
-{% endcodeblock %}
+算法第一章，讨论设计算法可以采用的策略。
 
 
-### 计数排序
-- 找出待排序的数组中最大和最小的元素；
-- 统计数组中每个值为i的元素出现的次数，存入数组C的第i项；
-- 对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；
-- 反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1。
-{% asset_img count_sort.gif bubble sort %}
+### 枚举策略
+枚举策略是将问题的可能解依次列举出来，然后一一带入问题检验，找到问题的解。
 
-{% codeblock %}
-function countingSort(arr, maxValue) {
-    var bucket = new Array(maxValue + 1),
-        sortedIndex = 0;
-        arrLen = arr.length,
-        bucketLen = maxValue + 1;
- 
-    for (var i = 0; i < arrLen; i++) {
-        if (!bucket[arr[i]]) {
-            bucket[arr[i]] = 0;
-        }
-        bucket[arr[i]]++;
-    }
- 
-    for (var j = 0; j < bucketLen; j++) {
-        while(bucket[j] > 0) {
-            arr[sortedIndex++] = j;
-            bucket[j]--;
-        }
-    }
- 
-    return arr;
-}
-{% endcodeblock %}
+枚举的优点是思路简单，只需要列举出「可能解」，然后逐个代入求解即可。缺点也很明显，由于「可能解」的数量过多，无法在有限空间或有限时间内完成所有可能性的验证。不过实际上枚举思想是最接近人的思维方式，在更多的时候是用来帮助我们去「理解问题」，而不是「解决问题」。
 
 
-### 桶排序
-- 设置一个定量的数组当作空桶；
-- 遍历输入数据，并且把数据一个一个放到对应的桶里去；
-- 对每个不是空的桶进行排序；
-- 从不是空的桶里把排好序的数据拼接起来。
-{% asset_img bucket_sort.gif bubble sort %}
-
-{% codeblock %}
-function bucketSort(arr, bucketSize) {
-    if (arr.length === 0) {
-      return arr;
-    }
- 
-    var i;
-    var minValue = arr[0];
-    var maxValue = arr[0];
-    for (i = 1; i < arr.length; i++) {
-      if (arr[i] < minValue) {
-          minValue = arr[i];                // 输入数据的最小值
-      } else if (arr[i] > maxValue) {
-          maxValue = arr[i];                // 输入数据的最大值
-      }
-    }
- 
-    // 桶的初始化
-    var DEFAULT_BUCKET_SIZE = 5;            // 设置桶的默认数量为5
-    bucketSize = bucketSize || DEFAULT_BUCKET_SIZE;
-    var bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;  
-    var buckets = new Array(bucketCount);
-    for (i = 0; i < buckets.length; i++) {
-        buckets[i] = [];
-    }
- 
-    // 利用映射函数将数据分配到各个桶中
-    for (i = 0; i < arr.length; i++) {
-        buckets[Math.floor((arr[i] - minValue) / bucketSize)].push(arr[i]);
-    }
- 
-    arr.length = 0;
-    for (i = 0; i < buckets.length; i++) {
-        insertionSort(buckets[i]);                      // 对每个桶进行排序，这里使用了插入排序
-        for (var j = 0; j < buckets[i].length; j++) {
-            arr.push(buckets[i][j]);                     
-        }
-    }
- 
-    return arr;
-}
-{% endcodeblock %}
+### 递推策略
+递推策略的核心就是从已知条件出发，逐步推算出问题的解。递推也是接近人类思维方式的思想，从经验和规律中，推导出问题的解。
+{% asset_img alg_recursion.webp recursion algorithm %}
 
 
-### 基数排序
-- 取得数组中的最大数，并取得位数；
-- arr为原始数组，从最低位开始取每个位组成radix数组；
-- 对radix进行计数排序（利用计数排序适用于小范围数的特点）；
-{% asset_img radix_sort.gif bubble sort %}
-
-{% codeblock %}
-var counter = [];
-function radixSort(arr, maxDigit) {
-    var mod = 10;
-    var dev = 1;
-    for (var i = 0; i < maxDigit; i++, dev *= 10, mod *= 10) {
-        for(var j = 0; j < arr.length; j++) {
-            var bucket = parseInt((arr[j] % mod) / dev);
-            if(counter[bucket]==null) {
-                counter[bucket] = [];
-            }
-            counter[bucket].push(arr[j]);
-        }
-        var pos = 0;
-        for(var j = 0; j < counter.length; j++) {
-            var value = null;
-            if(counter[j]!=null) {
-                while ((value = counter[j].shift()) != null) {
-                      arr[pos++] = value;
-                }
-          }
-        }
-    }
-    return arr;
-}
-{% endcodeblock %}
+### 分治策略
+分而治之，就是把一个复杂的问题分成两个或更多的相同或相似的子问题，直到最后子问题可以简单的直接求解，原问题的解即子问题的解的合并。
+{% asset_img alg_divide_conquer.jpeg divide conquer algorithm %}
+递归就是分治策略的实现。
 
 
+### 贪心策略
+贪心算法的实现过程就是从问题的一个初始解出发，每一次都作出「当前最优」的选择，直至遇到局部极值点。贪心所带来的局限性很明显，就是无法保证最后的解是最优的，很容易陷入局部最优的情况。
 
 
+### 动态规划策略
+动态规划是一种通过把原问题分解为相对简单的子问题的方式来求解复杂问题的方法。这些子问题的解被保存起来，以便在解决原问题时可以重复使用。例如，斐波那契数列就可以用动态规划求解。
+动态规划三大特征：
+- 最优子结构性质
+指的是一个问题的最优解包含其子问题的最优解。
+- 重叠子问题性质
+指的是在求解子问题的过程中，有大量的子问题是重复的，一个子问题在下一阶段的决策中可能会被多次用到。
+- 无后效性
+一旦某一个子问题的求解结果确定以后，就不会再被修改，也就是重复计算的结果也是不会变的，否则动态规划里面的存储也就没什么意义了。
+
+应用场景：
+问题能够分解成子问题来解决，子问题重叠性质是指在用递归算法自顶向下对问题进行求解时，每次产生的子问题并不总是新问题，有些子问题会被重复计算多次，为了避免多次解决这些子问题，它们的结果都逐渐被计算并被保存，因而不会在解决同样的问题时花费时间，直到整个问题都被解决。
 
 
+### 深度优先策略
+比如回溯法就是深度优先策略。
+回溯法是一种选优搜索法，按选优条件向纵深搜索(深度优先)，以达到目标。采用试错的思想，它尝试分步的去解决一个问题。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为回溯点。
+
+
+### 广度优先策略
+比如分治限界就是广度优先策略。
+所谓“分支”就是采用广度优先(BFS)的策略，依次搜索E-结点的所有分支，也就是所有相邻的结点，抛弃不满足约束的结点，其余节点加入活结点表。
+分支限界法类似于回溯法，也是一种在问题的解空间树上搜索问题解的算法，但在一般情况下，分支限界法与回溯法的求解目标不同。回溯法的求解目标是找出解空间树中满足约束条件的所有解，而分支限界法的求解目标则是找出满足约束条件的一个解，或是在满足约束条件的解中找出使某一目标函数值达到极大或极小的解，即在某种意义下的最优解。
+
+
+### 剪枝策略
+搜索算法一般是基于两种方法来进行的（ 深度优先 DFS 和广度优先 BFS ），而这两算法都是基于二叉搜索树的进行的。学过数据结构和算法的都知道二叉搜索树存在很多的分支，很难一次性拿到想要的结果，尤其是当输入参数较大时，二叉搜索树的分支大规模增加的时候，此时，由于搜索过程需要走很多条完全于与结果不相关的路线，所以剪枝思想就出现了。剪枝一种可以提高搜索算法时间和空间的策略，经过剪枝和其他优化策略优化过的算法在执行效率上远超一般未经剪枝的算法。甚至有些暴力搜索过不了时限的算法，也可以通过各种剪枝+优化大大缩短算法运行时间，成功通过时效限制。由此可见剪枝对于搜索算法的重要性。因此，剪枝对于学习算法和在工作中与算法打交道的人来说都是一类不得不学的知识点。
+
+- 可行性剪枝
+所谓可行性剪枝，就是如当前状态和题意不符，并且由于题目可以推出，往后的所有情况和题意都不符，那么就可以进行剪枝，直接把这种情况及后续的所有情况判负，直接返回。
+
+- 排除等效冗余
+所谓排除等效冗余，就是当几个枝桠具有完全相同的效果的时候，只选择其中一个走就可以了。
+
+- 最优性剪枝
+所谓最优性剪枝，是在我们用搜索方法解决最优化问题的时候的一种常用剪枝方法。当搜到一半的时候，发现比已经搜索到的最优解差，则该方案肯定是不行的，即刻停止搜索，进行回溯。
+
+- 顺序剪枝
+普遍来讲，搜索的顺序是不固定的，对一个问题来讲，算法可以进入搜索树的任意的一个子节点。但假如我们要搜索一个最小值，而非要从最大值存在的那个节点开搜，就可能存在搜索到最后才出解。而我们从最小的节点开搜很可能马上就出解。这就是顺序剪枝的一个应用。一般来讲，有单调性存在的搜索问题可以和贪心思想结合，进行顺序剪枝。
+
+- 记忆化
+记忆化搜索其实是搜索的另外一个分支。在这里简单介绍一下记忆化的原理：就是记录搜索的每一个状态，当重复搜索到相同的状态的时候直接返回。
+
+
+### 注意
+在实际应用中，我们需要根据具体问题选择合适的算法设计策略。有时候一个问题可能需要结合多种策略来解决。例如，在求解最短路径问题时，我们可以使用贪心算法和动态规划的结合，从起点开始不断选择最近的点作为下一步，同时记录下已经走过的路径，避免重复计算。
 
 
 
