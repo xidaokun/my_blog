@@ -7,7 +7,7 @@ tags:
 ---
 
 ### 简介
-算法第一章，讨论排序算法。
+算法第二章，讨论排序算法。
 {% asset_img sort_algorithm.png sort algorithm %}
 
 ### 插入排序
