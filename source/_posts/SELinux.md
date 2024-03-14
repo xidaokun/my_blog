@@ -1,6 +1,6 @@
 ---
 title: SELinux
-date: 2023-01-23 18:15:32
+date: 2019-08-23 18:15:32
 tags:
     - Security
 ---
