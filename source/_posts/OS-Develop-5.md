@@ -8,9 +8,7 @@ tags:
 
 ### 简介
 本章讨论Loader。
-MBR被写在硬盘的0盘0道2扇区；MBR会从该扇区读取loader.bin，然后将它加载到0x900地址处。
-同时在loader中，要设置vstart=0x900，以便MBR在加载完成后，可以jmp到0x900来执行loader。
-
+MBR被写在硬盘的0盘0道2扇区；MBR会从该扇区读取loader.bin，然后将它加载到0x900地址处。同时在loader中，要设置vstart=0x900，以便MBR在加载完成后，可以jmp到0x900来执行loader。
 接下来，loader会依次做如下工作：
 - 定义GDT
 - 定义Selector
@@ -99,3 +97,5 @@ p_mode_start:
 
    jmp $
 ```
+
+### 结束
