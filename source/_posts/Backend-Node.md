@@ -1,11 +1,11 @@
 ---
-title: Backend Node
+title: Storage Container
 date: 2023-3-05 17:22:00
-tags: Backend
+tags: Application Backend
 ---
 
 ### 1，简介
-一个后台服务项目，可以存储用户的文件和数据，并将文件同步到第三方云盘。
+后台服务项目，可以存储用户的文件和数据，并将文件同步到第三方云盘。
 
 ### 2，功能
 - 手机号注册/手机号登录
