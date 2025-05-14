@@ -33,16 +33,17 @@ tags: Application Backend
 
 
 ### backend
-
+https://github.com/xidaokun/TssServer
 
 ### android
-
+https://github.com/xidaokun/SpeechAssistant
 
 ### ios
-
+// TODO
 
 
 ### web
+// TODO
 
 
 
